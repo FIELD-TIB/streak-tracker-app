@@ -5,8 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Streak Tracker</title>
     <link rel="stylesheet" href="styles.css" />
+    <meta name="description" content="Daily streak tracker with task manager and reminders" />
+    <meta name="theme-color" content="#5b6cff" />
   </head>
   <body>
+    <button id="themeToggleBtn" class="theme-toggle" aria-label="Toggle dark mode" title="Toggle theme">
+      <span class="theme-icon">🌙</span>
+    </button>
+
     <div class="app-shell">
       <header class="topbar">
         <div>
@@ -20,7 +26,7 @@
         <aside class="widget-col">
           <section class="widget card">
             <div class="widget-header">
-              <span class="tag">Today’s focus</span>
+              <span class="tag">Today's focus</span>
               <span class="status-dot status-good"></span>
             </div>
             <h2 id="widgetTitle">Your streak is active</h2>
@@ -30,7 +36,7 @@
               <strong id="widgetTask">No task scheduled yet</strong>
             </div>
             <button id="markTaskDoneBtn" class="primary-btn" type="button">
-              Mark today’s task done
+              Mark today's task done
             </button>
           </section>
 
@@ -44,22 +50,12 @@
 
               <label>
                 Condition
-                <input
-                  type="text"
-                  id="streakCondition"
-                  placeholder="Run 20 minutes"
-                  required
-                />
+                <input type="text" id="streakCondition" placeholder="Run 20 minutes" required />
               </label>
 
               <label>
                 Reminder
-                <textarea
-                  id="streakReminder"
-                  rows="3"
-                  placeholder="Remember to do this before 9:00 AM"
-                  required
-                ></textarea>
+                <textarea id="streakReminder" rows="3" placeholder="Remember to do this before 9:00 AM" required></textarea>
               </label>
 
               <label>
@@ -104,6 +100,7 @@
     </div>
 
     <script src="storage.js"></script>
+    <script src="theme.js"></script>
     <script src="app.js"></script>
   </body>
 </html>
