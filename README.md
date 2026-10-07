@@ -1,289 +1,72 @@
-const todayDateEl = document.getElementById('todayDate');
-const widgetTitleEl = document.getElementById('widgetTitle');
-const widgetConditionEl = document.getElementById('widgetCondition');
-const widgetTaskEl = document.getElementById('widgetTask');
-const streakListEl = document.getElementById('streakList');
-const taskListEl = document.getElementById('taskList');
-const streakCountBadgeEl = document.getElementById('streakCountBadge');
-const markTaskDoneBtn = document.getElementById('markTaskDoneBtn');
+# Streak Tracker App
 
-const streakForm = document.getElementById('streakForm');
-const taskForm = document.getElementById('taskForm');
+A polished daily streak tracker built for productivity, habit consistency, and short-term focus management. The app combines a simple habit streak dashboard with a task manager and reminder widget so users can keep momentum without feeling overwhelmed.
 
-function formatDate(dateString) {
-  const date = new Date(dateString);
-  return new Intl.DateTimeFormat('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  }).format(date);
-}
+## Highlights
 
-function getTodayTasks() {
-  const todayIso = new Date().toISOString().split('T')[0];
-  return getTasks().filter((task) => task.dueDate === todayIso && !task.completed);
-}
+- Daily streak tracking with progress badges and reminders
+- Task manager with priority levels and completion states
+- Local storage persistence for streaks and tasks
+- Dark-mode support with a theme toggle
+- Responsive, clean interface optimized for both desktop and mobile
+- Ready to run as a local web app or packaged into a desktop executable
 
-function getNextReminder() {
-  const streaks = getStreaks();
-  if (!streaks.length) {
-    return 'No streak set yet. Add one to begin the daily habit.';
-  }
+## Features
 
-  const first = streaks[0];
-  return first.reminder;
-}
+- Add and remove streaks with custom conditions and reminders
+- Increment a streak manually to reflect progress
+- Create tasks with due dates and priority categories
+- Mark tasks complete or revert them when needed
+- Get a "Today's focus" widget that highlights the next priority action
+- Save all data locally in the browser's localStorage
 
-function getStreakState(streak) {
-  if (streak.currentCount >= 7) {
-    return {
-      label: 'Strong',
-      className: 'badge-good',
-    };
-  }
+## Project structure
 
-  if (streak.currentCount >= 3) {
-    return {
-      label: 'Good',
-      className: 'badge-warning',
-    };
-  }
+- `index.html` — main dashboard UI
+- `styles.css` — app styling and responsive layout
+- `app.js` — widget and task/streak interactions
+- `theme.js` — theme toggling and dark/light mode behavior
+- `storage.js` — persistent local storage logic
+- `server.js` — local static server for running the app
+- `build-exe.js` — script to build an executable package
+- `README.md` — project documentation
 
-  return {
-    label: 'Needs attention',
-    className: 'badge-danger',
-  };
-}
+## Run locally
 
-function renderTodayWidget() {
-  const tasks = getTodayTasks();
-  const streaks = getStreaks();
-  const primaryStreak = streaks[0];
+### Option 1: Open directly
 
-  if (tasks.length) {
-    const firstTask = tasks[0];
-    widgetTitleEl.textContent = 'Daily reminder is active';
-    widgetConditionEl.textContent = firstTask.priority
-      ? `Priority: ${firstTask.priority} — follow through before the day ends.`
-      : getNextReminder();
-    widgetTaskEl.textContent = firstTask.title;
-    markTaskDoneBtn.disabled = false;
-    markTaskDoneBtn.dataset.taskId = firstTask.id;
-    return;
-  }
+Open `index.html` in a browser.
 
-  if (primaryStreak) {
-    widgetTitleEl.textContent = `${primaryStreak.name} is on track`;
-    widgetConditionEl.textContent = primaryStreak.reminder;
-    widgetTaskEl.textContent = primaryStreak.condition;
-    markTaskDoneBtn.disabled = true;
-    markTaskDoneBtn.dataset.taskId = '';
-    return;
-  }
+### Option 2: Start the local web server
 
-  widgetTitleEl.textContent = 'Your streak is active';
-  widgetConditionEl.textContent = 'Add a habit and keep the momentum going.';
-  widgetTaskEl.textContent = 'No task scheduled yet';
-  markTaskDoneBtn.disabled = true;
-}
+```bash
+npm install
+npm start
+```
 
-function renderStreaks() {
-  const streaks = getStreaks();
-  streakCountBadgeEl.textContent = `${streaks.length} active`;
+Then visit:
 
-  if (!streaks.length) {
-    streakListEl.innerHTML = '<p class="item-note">No streaks added yet. Use the form to create your first daily habit.</p>';
-    return;
-  }
+```text
+http://localhost:3000
+```
 
-  streakListEl.innerHTML = streaks
-    .map((streak) => {
-      const status = getStreakState(streak);
-      return `
-        <article class="streak-item">
-          <div class="item-head">
-            <h4>${streak.name}</h4>
-            <span class="item-badge ${status.className}">${status.label}</span>
-          </div>
+## Build a Windows executable
 
-          <div class="item-meta">
-            <span class="streak-value">${streak.currentCount} days</span>
-            <span class="item-note">Condition: ${streak.condition}</span>
-          </div>
+This project includes a packaging script that generates a `.exe` with `pkg`.
 
-          <p class="item-note">${streak.reminder}</p>
+```bash
+npm install
+npm run build:exe
+```
 
-          <div class="item-actions">
-            <button class="check-btn" type="button" data-streak-increment="${streak.id}">+1 day</button>
-            <button class="check-btn" type="button" data-streak-delete="${streak.id}">Remove</button>
-          </div>
-        </article>
-      `;
-    })
-    .join('');
-}
+The generated executable appears in the `dist/` directory.
 
-function renderTasks() {
-  const tasks = getTasks();
+## Notes
 
-  if (!tasks.length) {
-    taskListEl.innerHTML = '<p class="item-note">No tasks for today yet.</p>';
-    return;
-  }
+- Data is stored in the browser using `localStorage`, so it persists on the same device/browser.
+- The app is intentionally lightweight and dependency-friendly for quick setup.
+- You can customize the default streaks and tasks in `storage.js`.
 
-  taskListEl.innerHTML = tasks
-    .map((task) => {
-      const isChecked = task.completed ? 'checked' : '';
-      const priorityClass =
-        task.priority === 'High'
-          ? 'badge-danger'
-          : task.priority === 'Medium'
-            ? 'badge-warning'
-            : 'badge-good';
+## License
 
-      return `
-        <article class="task-item ${isChecked}">
-          <div class="item-head">
-            <h4 class="task-title">${task.title}</h4>
-            <span class="item-badge ${priorityClass}">${task.priority}</span>
-          </div>
-
-          <div class="item-meta">
-            <span class="item-note">Due: ${formatDate(task.dueDate)}</span>
-            <span class="item-note">${task.completed ? 'Completed' : 'Open'}</span>
-          </div>
-
-          <div class="item-actions">
-            <button class="check-btn" type="button" data-task-toggle="${task.id}">
-              ${task.completed ? 'Undo' : 'Done'}
-            </button>
-            <button class="check-btn" type="button" data-task-remove="${task.id}">Delete</button>
-          </div>
-        </article>
-      `;
-    })
-    .join('');
-}
-
-function renderApp() {
-  const dateValue = new Date();
-  todayDateEl.textContent = new Intl.DateTimeFormat('en-US', {
-    weekday: 'long',
-    month: 'short',
-    day: 'numeric',
-  }).format(dateValue);
-
-  renderTodayWidget();
-  renderStreaks();
-  renderTasks();
-}
-
-function addStreakHandler(event) {
-  event.preventDefault();
-
-  const name = document.getElementById('streakName').value.trim();
-  const condition = document.getElementById('streakCondition').value.trim();
-  const reminder = document.getElementById('streakReminder').value.trim();
-  const currentCount = Number(document.getElementById('streakCount').value);
-
-  if (!name || !condition || !reminder) {
-    return;
-  }
-
-  addStreak({
-    name,
-    condition,
-    reminder,
-    currentCount: Number.isFinite(currentCount) ? currentCount : 0,
-  });
-
-  streakForm.reset();
-  renderApp();
-}
-
-function addTaskHandler(event) {
-  event.preventDefault();
-
-  const title = document.getElementById('taskTitle').value.trim();
-  const dueDate = document.getElementById('taskDueDate').value;
-  const priority = document.getElementById('taskPriority').value;
-
-  if (!title || !dueDate) {
-    return;
-  }
-
-  addTask({
-    title,
-    dueDate,
-    priority,
-  });
-
-  taskForm.reset();
-  document.getElementById('taskDueDate').value = new Date().toISOString().split('T')[0];
-  renderApp();
-}
-
-function handleTaskButtons(event) {
-  const taskToggleId = event.target.dataset.taskToggle;
-  const taskRemoveId = event.target.dataset.taskRemove;
-
-  if (taskToggleId) {
-    toggleTask(taskToggleId);
-    renderApp();
-    return;
-  }
-
-  if (taskRemoveId) {
-    removeTask(taskRemoveId);
-    renderApp();
-  }
-}
-
-function handleStreakButtons(event) {
-  const streakDeleteId = event.target.dataset.streakDelete;
-  const streakIncrementId = event.target.dataset.streakIncrement;
-
-  if (streakDeleteId) {
-    const next = getStreaks().filter((streak) => streak.id !== streakDeleteId);
-    saveStreaks(next);
-    renderApp();
-    return;
-  }
-
-  if (streakIncrementId) {
-    const next = getStreaks().map((streak) => {
-      if (streak.id === streakIncrementId) {
-        return { ...streak, currentCount: streak.currentCount + 1 };
-      }
-      return streak;
-    });
-
-    saveStreaks(next);
-    renderApp();
-  }
-}
-
-function handleMarkTaskDone() {
-  const taskId = markTaskDoneBtn.dataset.taskId;
-  if (!taskId) {
-    return;
-  }
-
-  toggleTask(taskId);
-  renderApp();
-}
-
-streakForm.addEventListener('submit', addStreakHandler);
-taskForm.addEventListener('submit', addTaskHandler);
-document.addEventListener('click', (event) => {
-  handleTaskButtons(event);
-  handleStreakButtons(event);
-
-  if (event.target === markTaskDoneBtn || event.target.closest('#markTaskDoneBtn')) {
-    handleMarkTaskDone();
-  }
-});
-
-// Set a default due date for the task form when the app loads.
-document.getElementById('taskDueDate').value = new Date().toISOString().split('T')[0];
-renderApp();
+MIT

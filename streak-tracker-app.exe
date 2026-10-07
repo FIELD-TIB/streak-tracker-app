@@ -1,0 +1,11 @@
+# Streak Tracker App
+#
+# This file is a build placeholder for the Windows executable created by:
+#   npm install
+#   npm run build:exe
+#
+# A real .exe will be generated in the dist/ folder using pkg.
+# To produce it on a Windows machine, run:
+#   npm install
+#   npm run build:exe
+

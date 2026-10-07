@@ -4,12 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Streak Tracker</title>
-    <link rel="stylesheet" href="styles.css" />
-    <meta name="description" content="Daily streak tracker with task manager and reminders" />
+    <meta name="description" content="Daily streak tracker with a task manager, reminder widget, and progress dashboard" />
     <meta name="theme-color" content="#5b6cff" />
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <button id="themeToggleBtn" class="theme-toggle" aria-label="Toggle dark mode" title="Toggle theme">
+    <button id="themeToggleBtn" class="theme-toggle" type="button" aria-label="Toggle dark mode" title="Toggle theme">
       <span class="theme-icon">🌙</span>
     </button>
 
@@ -19,15 +19,15 @@
           <p class="eyebrow">Daily consistency</p>
           <h1>Streak Tracker</h1>
         </div>
-        <div class="date-pill" id="todayDate"></div>
+        <div class="date-pill" id="todayDate" aria-live="polite"></div>
       </header>
 
       <main class="dashboard">
         <aside class="widget-col">
-          <section class="widget card">
+          <section class="widget card" aria-label="Daily focus widget">
             <div class="widget-header">
               <span class="tag">Today's focus</span>
-              <span class="status-dot status-good"></span>
+              <span class="status-dot status-good" aria-hidden="true"></span>
             </div>
             <h2 id="widgetTitle">Your streak is active</h2>
             <p id="widgetCondition">Complete your task and keep the streak alive.</p>
@@ -40,7 +40,7 @@
             </button>
           </section>
 
-          <section class="card">
+          <section class="card" aria-label="Quick add streak form">
             <h3>Quick add</h3>
             <form id="streakForm" class="stack-form">
               <label>
@@ -69,23 +69,23 @@
         </aside>
 
         <section class="content-col">
-          <section class="card">
+          <section class="card" aria-label="Active streaks">
             <div class="section-head">
               <h3>Active streaks</h3>
-              <span id="streakCountBadge" class="mini-pill"></span>
+              <span id="streakCountBadge" class="mini-pill" aria-live="polite"></span>
             </div>
             <div id="streakList" class="card-stack"></div>
           </section>
 
-          <section class="card">
+          <section class="card" aria-label="Task manager">
             <div class="section-head">
               <h3>Task manager</h3>
             </div>
 
             <form id="taskForm" class="inline-form">
-              <input id="taskTitle" type="text" placeholder="Add a task" required />
-              <input id="taskDueDate" type="date" required />
-              <select id="taskPriority">
+              <input id="taskTitle" type="text" placeholder="Add a task" aria-label="Task title" required />
+              <input id="taskDueDate" type="date" aria-label="Task due date" required />
+              <select id="taskPriority" aria-label="Task priority">
                 <option value="High">High</option>
                 <option value="Medium" selected>Medium</option>
                 <option value="Low">Low</option>
@@ -93,7 +93,7 @@
               <button class="primary-btn" type="submit">Add task</button>
             </form>
 
-            <div id="taskList" class="task-list"></div>
+            <div id="taskList" class="task-list" aria-live="polite"></div>
           </section>
         </section>
       </main>

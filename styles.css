@@ -1,9 +1,6 @@
-* {
-  box-sizing: border-box;
-}
-
 :root {
   --bg: #f5f7ff;
+  --bg-strong: #eaf0ff;
   --card: #ffffff;
   --card-alt: #eef3ff;
   --text: #1d2433;
@@ -17,11 +14,31 @@
   --shadow: 0 16px 40px rgba(33, 52, 112, 0.12);
 }
 
+:root[data-theme='dark'] {
+  --bg: #0f172a;
+  --bg-strong: #111827;
+  --card: #111c2f;
+  --card-alt: #172336;
+  --text: #e5eefb;
+  --muted: #9bb2d3;
+  --primary: #8ea4ff;
+  --primary-dark: #6f88ff;
+  --success: #3bd284;
+  --warning: #f7be5d;
+  --danger: #ff7a88;
+  --border: rgba(148, 163, 184, 0.18);
+  --shadow: 0 18px 42px rgba(2, 6, 23, 0.5);
+}
+
+* {
+  box-sizing: border-box;
+}
+
 body {
   margin: 0;
   min-height: 100vh;
   font-family: Inter, "Segoe UI", sans-serif;
-  background: linear-gradient(180deg, #eef4ff 0%, var(--bg) 100%);
+  background: linear-gradient(180deg, var(--bg-strong) 0%, var(--bg) 100%);
   color: var(--text);
 }
 
@@ -30,6 +47,14 @@ input,
 textarea,
 select {
   font: inherit;
+}
+
+button {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
 }
 
 .app-shell {
@@ -42,6 +67,7 @@ select {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 24px;
+  gap: 20px;
 }
 
 .topbar h1 {
@@ -88,7 +114,7 @@ select {
 }
 
 .widget {
-  background: linear-gradient(135deg, #eef2ff 0%, #ffffff 100%);
+  background: linear-gradient(135deg, rgba(142, 164, 255, 0.10) 0%, var(--card) 100%);
 }
 
 .widget-header,
@@ -167,12 +193,37 @@ select {
   padding: 12px 18px;
   font-weight: 700;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 10px 20px rgba(91, 108, 255, 0.18);
 }
 
 .primary-btn:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 8px 18px rgba(91, 108, 255, 0.25);
+  box-shadow: 0 14px 18px rgba(91, 108, 255, 0.22);
+}
+
+.primary-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.theme-toggle {
+  position: fixed;
+  right: 18px;
+  top: 18px;
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.32);
+  backdrop-filter: blur(8px);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.theme-icon {
+  font-size: 1.35rem;
 }
 
 .stack-form,
@@ -198,7 +249,7 @@ textarea,
 select {
   width: 100%;
   border: 1px solid var(--border);
-  background: #fbfcff;
+  background: rgba(255, 255, 255, 0.03);
   border-radius: 12px;
   padding: 11px 12px;
   color: var(--text);
@@ -219,7 +270,7 @@ textarea {
   display: grid;
   gap: 10px;
   border: 1px solid var(--border);
-  background: linear-gradient(180deg, #fff 0%, #fafbff 100%);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.02) 100%);
   border-radius: 16px;
   padding: 16px;
 }
@@ -289,7 +340,7 @@ textarea {
 .check-btn {
   border: none;
   border-radius: 10px;
-  background: #edf4ff;
+  background: rgba(91, 108, 255, 0.08);
   color: var(--primary-dark);
   padding: 8px 12px;
   cursor: pointer;
@@ -297,7 +348,7 @@ textarea {
 }
 
 .task-item.checked {
-  opacity: 0.7;
+  opacity: 0.72;
 }
 
 .task-item.checked .task-title {
@@ -311,5 +362,10 @@ textarea {
 
   .inline-form {
     grid-template-columns: 1fr;
+  }
+
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }

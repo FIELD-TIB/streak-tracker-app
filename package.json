@@ -1,0 +1,42 @@
+{
+  "name": "streak-tracker-app",
+  "version": "1.1.0",
+  "description": "A comprehensive daily streak tracking app with widgets, task manager, and reminders",
+  "main": "server.js",
+  "bin": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "build:exe": "node build-exe.js"
+  },
+  "keywords": [
+    "streak",
+    "tracker",
+    "productivity",
+    "habit",
+    "task-manager",
+    "daily-reminder"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "pkg": "^5.11.0"
+  },
+  "pkg": {
+    "assets": [
+      "*.html",
+      "*.css",
+      "*.js",
+      "*.json",
+      "README.md"
+    ],
+    "targets": [
+      "node18-win-x64",
+      "node18-linux-x64",
+      "node18-macos-x64"
+    ],
+    "outputPath": "dist"
+  }
+}
