@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Streak Tracker</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Daily consistency</p>
+          <h1>Streak Tracker</h1>
+        </div>
+        <div class="date-pill" id="todayDate"></div>
+      </header>
+
+      <main class="dashboard">
+        <aside class="widget-col">
+          <section class="widget card">
+            <div class="widget-header">
+              <span class="tag">Today’s focus</span>
+              <span class="status-dot status-good"></span>
+            </div>
+            <h2 id="widgetTitle">Your streak is active</h2>
+            <p id="widgetCondition">Complete your task and keep the streak alive.</p>
+            <div class="widget-task-box">
+              <span>Task to do</span>
+              <strong id="widgetTask">No task scheduled yet</strong>
+            </div>
+            <button id="markTaskDoneBtn" class="primary-btn" type="button">
+              Mark today’s task done
+            </button>
+          </section>
+
+          <section class="card">
+            <h3>Quick add</h3>
+            <form id="streakForm" class="stack-form">
+              <label>
+                Streak name
+                <input type="text" id="streakName" placeholder="Morning run" required />
+              </label>
+
+              <label>
+                Condition
+                <input
+                  type="text"
+                  id="streakCondition"
+                  placeholder="Run 20 minutes"
+                  required
+                />
+              </label>
+
+              <label>
+                Reminder
+                <textarea
+                  id="streakReminder"
+                  rows="3"
+                  placeholder="Remember to do this before 9:00 AM"
+                  required
+                ></textarea>
+              </label>
+
+              <label>
+                Current streak
+                <input type="number" id="streakCount" min="0" value="0" required />
+              </label>
+
+              <button class="primary-btn" type="submit">Add streak</button>
+            </form>
+          </section>
+        </aside>
+
+        <section class="content-col">
+          <section class="card">
+            <div class="section-head">
+              <h3>Active streaks</h3>
+              <span id="streakCountBadge" class="mini-pill"></span>
+            </div>
+            <div id="streakList" class="card-stack"></div>
+          </section>
+
+          <section class="card">
+            <div class="section-head">
+              <h3>Task manager</h3>
+            </div>
+
+            <form id="taskForm" class="inline-form">
+              <input id="taskTitle" type="text" placeholder="Add a task" required />
+              <input id="taskDueDate" type="date" required />
+              <select id="taskPriority">
+                <option value="High">High</option>
+                <option value="Medium" selected>Medium</option>
+                <option value="Low">Low</option>
+              </select>
+              <button class="primary-btn" type="submit">Add task</button>
+            </form>
+
+            <div id="taskList" class="task-list"></div>
+          </section>
+        </section>
+      </main>
+    </div>
+
+    <script src="storage.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
